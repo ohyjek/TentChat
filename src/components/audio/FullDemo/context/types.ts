@@ -9,11 +9,13 @@
 import type { CalculateAudioParameters } from "@lib/spatial-audio-engine";
 import type {
   AudioSourceType,
+  AudioParameters,
   DirectivityPattern,
   DistanceModel,
   DrawingMode,
   DrawnRoom,
   Position,
+  RemotePeerState,
   SpeakerState,
   Wall,
   Bounds,
@@ -117,6 +119,11 @@ interface DemoContextValue {
   getAudioParams: (speaker: SpeakerState) => CalculateAudioParameters;
   calculateDisplayGain: (speaker: SpeakerState) => number;
   getWallCount: (speaker: SpeakerState) => number;
+
+  // Remote peer (WebRTC)
+  remotePeerState: Accessor<RemotePeerState | null>;
+  remoteAudioParams: Accessor<AudioParameters | null>;
+  webRTCConnectionState: Accessor<RTCPeerConnectionState | null>;
 
   // Interaction handlers
   handleSpeakerMoveStart: (speakerId: string) => (e: MouseEvent) => void;

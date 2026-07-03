@@ -95,6 +95,7 @@ const createMockAudioContext = (): MockAudioContext => ({
 // Mock the audio store
 vi.mock("@stores/audio", () => ({
   audioStore: {
+    initializeAudio: vi.fn(),
     getAudioContext: vi.fn(() => mockAudioContext),
     masterVolume: () => 1,
   },
@@ -160,20 +161,18 @@ describe("useRemoteSpeaker", () => {
       const mockStream = new MediaStream();
       remoteSpeaker.setRemoteStream(mockStream);
 
-      // When implemented:
-      // expect(mockAudioContext.createMediaStreamSource).toHaveBeenCalledWith(mockStream);
-      // expect(mockAudioContext.createGain).toHaveBeenCalled();
-      // expect(mockAudioContext.createStereoPanner).toHaveBeenCalled();
+      expect(mockAudioContext.createMediaStreamSource).toHaveBeenCalledWith(mockStream);
+      expect(mockAudioContext.createGain).toHaveBeenCalled();
+      expect(mockAudioContext.createStereoPanner).toHaveBeenCalled();
     });
 
     it("connects audio nodes in correct order", () => {
       const mockStream = new MediaStream();
       remoteSpeaker.setRemoteStream(mockStream);
 
-      // When implemented:
-      // expect(mockSourceNode.connect).toHaveBeenCalledWith(mockPannerNode);
-      // expect(mockPannerNode.connect).toHaveBeenCalledWith(mockGainNode);
-      // expect(mockGainNode.connect).toHaveBeenCalledWith(mockAudioContext.destination);
+      expect(mockSourceNode.connect).toHaveBeenCalledWith(mockPannerNode);
+      expect(mockPannerNode.connect).toHaveBeenCalledWith(mockGainNode);
+      expect(mockGainNode.connect).toHaveBeenCalledWith(mockAudioContext.destination);
     });
 
     it("disconnects previous stream when setting new one", () => {
@@ -183,8 +182,7 @@ describe("useRemoteSpeaker", () => {
       remoteSpeaker.setRemoteStream(stream1);
       remoteSpeaker.setRemoteStream(stream2);
 
-      // When implemented:
-      // expect(mockSourceNode.disconnect).toHaveBeenCalled();
+      expect(mockSourceNode.disconnect).toHaveBeenCalled();
     });
 
     it("cleans up nodes when stream is set to null", () => {
@@ -192,10 +190,9 @@ describe("useRemoteSpeaker", () => {
       remoteSpeaker.setRemoteStream(mockStream);
       remoteSpeaker.setRemoteStream(null);
 
-      // When implemented:
-      // expect(mockSourceNode.disconnect).toHaveBeenCalled();
-      // expect(mockGainNode.disconnect).toHaveBeenCalled();
-      // expect(mockPannerNode.disconnect).toHaveBeenCalled();
+      expect(mockSourceNode.disconnect).toHaveBeenCalled();
+      expect(mockGainNode.disconnect).toHaveBeenCalled();
+      expect(mockPannerNode.disconnect).toHaveBeenCalled();
     });
   });
 
@@ -203,10 +200,10 @@ describe("useRemoteSpeaker", () => {
     beforeEach(() => createRemoteSpeaker());
 
     it("updates position state", () => {
+      // Position is stored even without a stream; params stay null until one is set
       remoteSpeaker.updateRemotePosition({ x: 2, y: 3 }, Math.PI / 4);
 
-      // When implemented, should recalculate audio params
-      // This test verifies the position is stored for audio calculations
+      expect(remoteSpeaker.audioParams()).toBeNull();
     });
 
     it("recalculates audio parameters when position changes", () => {
@@ -215,25 +212,30 @@ describe("useRemoteSpeaker", () => {
 
       remoteSpeaker.updateRemotePosition({ x: 2, y: 0 }, 0);
 
-      // When implemented:
-      // expect(remoteSpeaker.audioParams()).not.toBeNull();
-      // expect(remoteSpeaker.audioParams()?.distance).toBeCloseTo(2);
+      expect(remoteSpeaker.audioParams()).not.toBeNull();
+      expect(remoteSpeaker.audioParams()?.distance).toBeCloseTo(2);
     });
 
     it("handles position at origin", () => {
+      const mockStream = new MediaStream();
+      remoteSpeaker.setRemoteStream(mockStream);
+
       remoteSpeaker.updateRemotePosition({ x: 0, y: 0 }, 0);
 
-      // Should not throw
-      // When implemented, distance should be 0
+      expect(remoteSpeaker.audioParams()?.distance).toBe(0);
     });
 
     it("handles various facing angles", () => {
-      // Test different facing directions
-      remoteSpeaker.updateRemotePosition({ x: 1, y: 0 }, 0);
-      remoteSpeaker.updateRemotePosition({ x: 1, y: 0 }, Math.PI);
-      remoteSpeaker.updateRemotePosition({ x: 1, y: 0 }, -Math.PI / 2);
+      const mockStream = new MediaStream();
+      remoteSpeaker.setRemoteStream(mockStream);
 
-      // Should not throw for any angle
+      for (const facing of [0, Math.PI, -Math.PI / 2]) {
+        remoteSpeaker.updateRemotePosition({ x: 1, y: 0 }, facing);
+        const params = remoteSpeaker.audioParams();
+        expect(params).not.toBeNull();
+        expect(Number.isFinite(params?.volume)).toBe(true);
+        expect(Number.isFinite(params?.pan)).toBe(true);
+      }
     });
   });
 
@@ -250,20 +252,17 @@ describe("useRemoteSpeaker", () => {
       remoteSpeaker.setRemoteStream(mockStream);
       remoteSpeaker.updateRemotePosition({ x: 3, y: 4 }, 0);
 
-      // When implemented:
-      // expect(remoteSpeaker.audioParams()?.distance).toBeCloseTo(5); // 3-4-5 triangle
+      expect(remoteSpeaker.audioParams()?.distance).toBeCloseTo(5); // 3-4-5 triangle
     });
 
     it("calculates stereo pan based on position", () => {
       const mockStream = new MediaStream();
       remoteSpeaker.setRemoteStream(mockStream);
 
-      // Position to the right (listener facing up by default)
+      // Position to the right (default listener at origin, facing up)
       remoteSpeaker.updateRemotePosition({ x: 2, y: 0 }, 0);
 
-      // When implemented:
-      // Pan should be positive (to the right)
-      // expect(remoteSpeaker.audioParams()?.pan).toBeGreaterThan(0);
+      expect(remoteSpeaker.audioParams()?.pan).toBeGreaterThan(0);
     });
 
     it("includes directional gain", () => {
@@ -271,10 +270,9 @@ describe("useRemoteSpeaker", () => {
       remoteSpeaker.setRemoteStream(mockStream);
       remoteSpeaker.updateRemotePosition({ x: 2, y: 0 }, 0);
 
-      // When implemented:
-      // expect(remoteSpeaker.audioParams()?.directionalGain).toBeDefined();
-      // expect(remoteSpeaker.audioParams()?.directionalGain).toBeGreaterThan(0);
-      // expect(remoteSpeaker.audioParams()?.directionalGain).toBeLessThanOrEqual(1);
+      expect(remoteSpeaker.audioParams()?.directionalGain).toBeDefined();
+      expect(remoteSpeaker.audioParams()?.directionalGain).toBeGreaterThan(0);
+      expect(remoteSpeaker.audioParams()?.directionalGain).toBeLessThanOrEqual(1);
     });
 
     it("applies audio parameters to nodes", () => {
@@ -282,9 +280,39 @@ describe("useRemoteSpeaker", () => {
       remoteSpeaker.setRemoteStream(mockStream);
       remoteSpeaker.updateRemotePosition({ x: 2, y: 0 }, 0);
 
-      // When implemented:
-      // expect(mockGainNode.gain.linearRampToValueAtTime).toHaveBeenCalled();
-      // OR expect(mockGainNode.gain.value) to be set
+      expect(mockGainNode.gain.linearRampToValueAtTime).toHaveBeenCalled();
+      // Source to the right of the default listener → panned right on the node itself
+      expect(mockPannerNode.pan.value).toBeGreaterThan(0);
+    });
+
+    it("attaches a muted monitor element for the Chromium remote-stream quirk", () => {
+      const createElementSpy = vi.spyOn(document, "createElement");
+      const mockStream = new MediaStream();
+      remoteSpeaker.setRemoteStream(mockStream);
+
+      expect(createElementSpy).toHaveBeenCalledWith("audio");
+      const el = createElementSpy.mock.results.find(
+        (r) => (r.value as HTMLElement)?.tagName === "AUDIO"
+      )?.value as HTMLAudioElement;
+      expect(el.muted).toBe(true);
+      expect(el.autoplay).toBe(true);
+      createElementSpy.mockRestore();
+    });
+
+    it("respects listener/walls/options overrides", () => {
+      dispose?.();
+      dispose = createRoot((d) => {
+        remoteSpeaker = useRemoteSpeaker({
+          getListener: () => ({ position: { x: 1, y: 0 }, facing: 0 }),
+        });
+        return d;
+      });
+
+      const mockStream = new MediaStream();
+      remoteSpeaker.setRemoteStream(mockStream);
+      remoteSpeaker.updateRemotePosition({ x: 4, y: 0 }, 0);
+
+      expect(remoteSpeaker.audioParams()?.distance).toBeCloseTo(3);
     });
   });
 
@@ -297,44 +325,9 @@ describe("useRemoteSpeaker", () => {
       // Dispose triggers onCleanup
       dispose();
 
-      // When implemented:
-      // expect(mockSourceNode.disconnect).toHaveBeenCalled();
-      // expect(mockGainNode.disconnect).toHaveBeenCalled();
-      // expect(mockPannerNode.disconnect).toHaveBeenCalled();
-    });
-  });
-});
-
-// =============================================================================
-// Audio parameter calculation tests (for when you implement)
-// =============================================================================
-
-describe("useRemoteSpeaker audio calculations", () => {
-  describe("distance attenuation", () => {
-    it("should attenuate volume with distance", () => {
-      // Helper test for your distance calculation
-      const calculateVolume = (distance: number, maxDistance = 5) => {
-        if (distance <= 1) return 1;
-        if (distance >= maxDistance) return 0;
-        return 1 / distance; // Simple inverse model
-      };
-
-      expect(calculateVolume(1)).toBe(1);
-      expect(calculateVolume(2)).toBe(0.5);
-      expect(calculateVolume(5)).toBe(0);
-    });
-  });
-
-  describe("stereo panning", () => {
-    it("should calculate pan from angle", () => {
-      // Helper test for your pan calculation
-      const calculatePan = (angle: number) => {
-        return Math.sin(angle); // -1 to 1 based on angle
-      };
-
-      expect(calculatePan(0)).toBeCloseTo(0); // In front
-      expect(calculatePan(Math.PI / 2)).toBeCloseTo(1); // To the right
-      expect(calculatePan(-Math.PI / 2)).toBeCloseTo(-1); // To the left
+      expect(mockSourceNode.disconnect).toHaveBeenCalled();
+      expect(mockGainNode.disconnect).toHaveBeenCalled();
+      expect(mockPannerNode.disconnect).toHaveBeenCalled();
     });
   });
 });

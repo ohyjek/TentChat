@@ -10,6 +10,7 @@ import {
   createSignal,
   createEffect,
   onCleanup,
+  untrack,
   type JSX,
 } from "solid-js";
 import type { DistanceModel } from "@clippis/types";
@@ -21,7 +22,9 @@ import {
   useRoomManager,
   useSpeakerManager,
   useCanvasDrawing,
+  useRemoteSpeaker,
 } from "@lib/hooks";
+import { webRTCStore } from "@stores/webRTC";
 import type { SpeakerState, Position, AudioSourceType, DemoContextValue } from "./types";
 import {
   ROOM_COLORS,
@@ -173,7 +176,7 @@ export function DemoProvider(props: { children: JSX.Element }) {
    *
    * @returns The effective attenuation for the current speaker.
    */
-  const effectiveAttenuation = (speaker: SpeakerState): number => {
+  const effectiveAttenuationAt = (position: Position): number => {
     const roomList = roomManager.rooms();
     if (roomList.length === 0) return DEFAULT_ATTENUATION;
     const perspectiveSpeaker = speakerManager.getCurrentPerspectiveSpeaker();
@@ -186,7 +189,7 @@ export function DemoProvider(props: { children: JSX.Element }) {
       if (isSpeakerInsideRoom(room, perspectiveSpeaker)) {
         maxAttenuation = Math.max(maxAttenuation, room.attenuation);
       }
-      if (isSpeakerInsideRoom(room, speaker)) {
+      if (isSpeakerInsideRoom(room, { position })) {
         maxAttenuation = Math.max(maxAttenuation, room.attenuation);
       }
     }
@@ -194,6 +197,9 @@ export function DemoProvider(props: { children: JSX.Element }) {
     // logger.audio.debug("Info", { maxAttenuation });
     return maxAttenuation >= 0 ? maxAttenuation : DEFAULT_ATTENUATION;
   };
+
+  const effectiveAttenuation = (speaker: SpeakerState): number =>
+    effectiveAttenuationAt(speaker.position);
 
   /**
    * Calculate the audio parameters for a speaker.
@@ -529,6 +535,64 @@ export function DemoProvider(props: { children: JSX.Element }) {
   };
 
   // ============================================================================
+  // REMOTE PEER (WebRTC)
+  // ============================================================================
+
+  // Spatialized playback for the remote peer's audio, driven by the same
+  // listener/walls/settings as local speakers.
+  const remoteSpeaker = useRemoteSpeaker({
+    getListener: () =>
+      createListener(
+        speakerManager.getPerspectivePosition(),
+        speakerManager.getPerspectiveFacing()
+      ),
+    getWalls: roomManager.allWalls,
+    getAudioOptions: () => ({
+      distanceModel: distanceModel(),
+      masterVolume: audioStore.masterVolume(),
+      maxDistance: maxDistance(),
+      rearGainFloor: rearGainFloor(),
+      attenuationPerWall:
+        1 - effectiveAttenuationAt(webRTCStore.remotePeerState()?.position ?? { x: 0, y: 0 }),
+    }),
+  });
+
+  // Route the remote peer's audio through the spatial pipeline.
+  // untrack: setRemoteStream reads store signals internally (initializeAudio);
+  // only the stream itself should re-trigger this effect.
+  createEffect(() => {
+    const stream = webRTCStore.remoteStream();
+    untrack(() => remoteSpeaker.setRemoteStream(stream));
+  });
+
+  // Spatialize using the remote peer's synced position
+  createEffect(() => {
+    const peer = webRTCStore.remotePeerState();
+    if (peer) remoteSpeaker.updateRemotePosition(peer.position, peer.facing);
+  });
+
+  // Send our perspective position to the remote peer while the channel is open
+  let lastSentPosition: { x: number; y: number; facing: number } | null = null;
+  createEffect(() => {
+    if (!webRTCStore.dataChannelOpen()) {
+      lastSentPosition = null; // resend current position on (re)open
+      return;
+    }
+    const position = speakerManager.getPerspectivePosition();
+    const facing = speakerManager.getPerspectiveFacing();
+    if (
+      lastSentPosition &&
+      lastSentPosition.x === position.x &&
+      lastSentPosition.y === position.y &&
+      lastSentPosition.facing === facing
+    ) {
+      return;
+    }
+    lastSentPosition = { x: position.x, y: position.y, facing };
+    webRTCStore.sendPosition(position, facing);
+  });
+
+  // ============================================================================
   // EFFECTS
   // ============================================================================
 
@@ -681,6 +745,11 @@ export function DemoProvider(props: { children: JSX.Element }) {
     getAudioParams,
     calculateDisplayGain,
     getWallCount,
+
+    // Remote peer (WebRTC)
+    remotePeerState: webRTCStore.remotePeerState,
+    remoteAudioParams: remoteSpeaker.audioParams,
+    webRTCConnectionState: webRTCStore.connectionState,
 
     // Interaction handlers
     handleSpeakerMoveStart,
