@@ -21,7 +21,7 @@
     "format": "biome format --write .",
     "format:check": "biome format .",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm typecheck && biome check . && pnpm test",
+    "check": "pnpm typecheck && biome check --error-on-warnings . && pnpm test",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
