@@ -1,18 +1,42 @@
 /**
  * WebRTC.tsx - The WebRTC page
  *
- * Signaling flow: Run `pnpm signaling` in a terminal. Both peers: Connect, Init, then one clicks Create offer.
- * Offer/answer/ICE go over the wire; no copy-paste.
+ * Signaling flow: Run `pnpm signaling` in a terminal. Both peers: Connect, then one clicks
+ * Create offer (connection, mic, and answer are automatic). Offer/answer/ICE go over the wire.
  *
  * Manual flow: Use the sections below to copy-paste SDP and ICE between windows.
+ *
+ * Remote audio plays here un-spatialized; open the Tent page for spatialized playback.
  */
-import { createSignal } from "solid-js";
+import { createSignal, createEffect, onCleanup } from "solid-js";
 import styles from "./WebRTC.module.css";
 import { webRTCStore } from "@stores/webRTC";
 
 export function WebRTC() {
   const [remoteSdpPaste, setRemoteSdpPaste] = createSignal("");
   const [remoteIcePaste, setRemoteIcePaste] = createSignal("");
+
+  // Plain (non-spatial) playback of the remote peer so this page is self-sufficient
+  let remoteAudioRef: HTMLAudioElement | undefined;
+  createEffect(() => {
+    const stream = webRTCStore.remoteStream();
+    if (remoteAudioRef) {
+      remoteAudioRef.srcObject = stream;
+      if (stream) {
+        void remoteAudioRef.play().catch(() => {
+          /* autoplay restrictions — playback starts on next user gesture */
+        });
+      }
+    }
+  });
+  // A detached media element keeps playing its stream — stop it on unmount or
+  // it double-plays (un-spatialized) on top of the Tent's spatial pipeline
+  onCleanup(() => {
+    if (remoteAudioRef) {
+      remoteAudioRef.pause();
+      remoteAudioRef.srcObject = null;
+    }
+  });
 
   const setRemoteOffer = () => webRTCStore.setRemoteSdp(remoteSdpPaste().trim(), "offer");
   const setRemoteAnswer = () => webRTCStore.setRemoteSdp(remoteSdpPaste().trim(), "answer");
@@ -37,9 +61,20 @@ export function WebRTC() {
   const addPastedIceCandidates = async () => {
     const text = remoteIcePaste().trim();
     if (!text) return;
-    const lines = text.split("\n").filter((s) => s.trim());
-    for (const line of lines) {
-      await webRTCStore.addIceCandidate(line);
+    // Accept what "Copy ICE" produces (a JSON array) as well as a single
+    // candidate object or one JSON object per line
+    let candidates: (RTCIceCandidateInit | string)[];
+    try {
+      const parsed = JSON.parse(text) as RTCIceCandidateInit | RTCIceCandidateInit[];
+      candidates = Array.isArray(parsed) ? parsed : [parsed];
+    } catch {
+      candidates = text
+        .split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean);
+    }
+    for (const candidate of candidates) {
+      await webRTCStore.addIceCandidate(candidate);
     }
   };
 
@@ -61,7 +96,20 @@ export function WebRTC() {
         <p class={styles.subtitle}>
           Connection state: <strong>{webRTCStore.connectionState() ?? "—"}</strong>
           {webRTCStore.signalingConnected() && " · Signaling: connected"}
+          {webRTCStore.dataChannelOpen() && " · DataChannel: open"}
+          {webRTCStore.localStream() && " · Mic: sending"}
+          {webRTCStore.remoteStream() && " · Remote audio: receiving"}
         </p>
+        <p class={styles.hint}>
+          Remote peer position:{" "}
+          {(() => {
+            const peer = webRTCStore.remotePeerState();
+            return peer
+              ? `x=${peer.position.x.toFixed(2)}, y=${peer.position.y.toFixed(2)}, facing=${peer.facing.toFixed(2)}`
+              : "— (none received yet)";
+          })()}
+        </p>
+        <audio ref={remoteAudioRef} autoplay />
 
         <section class={styles.section}>
           <h2 class={styles.sectionTitle}>Signaling (run pnpm signaling first)</h2>

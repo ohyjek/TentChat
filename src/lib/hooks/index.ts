@@ -33,7 +33,11 @@ export {
   type SpeakerManagerOptions,
   type SpeakerManagerState,
 } from "@lib/hooks/useSpeakerManager";
-export { useRemoteSpeaker, type UseRemoteSpeakerReturn } from "@lib/hooks/useRemoteSpeaker";
+export {
+  useRemoteSpeaker,
+  type UseRemoteSpeakerReturn,
+  type RemoteSpeakerOptions,
+} from "@lib/hooks/useRemoteSpeaker";
 export {
   useCanvasDrawing,
   type CanvasDrawingOptions,

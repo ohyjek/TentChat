@@ -262,7 +262,7 @@ export function isValidRoomSize(start: Position, end: Position): boolean {
  * @returns true if the speaker is inside the room
  * @returns false if the speaker is outside the room
  */
-export const isSpeakerInsideRoom = (room: DrawnRoom, speaker: SpeakerState) => {
+export const isSpeakerInsideRoom = (room: DrawnRoom, speaker: Pick<SpeakerState, "position">) => {
   const speakerPosition = speaker.position;
   const roomBounds = room.bounds;
   const roomWidth = roomBounds.width;
