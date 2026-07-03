@@ -8,7 +8,12 @@ import type { Position, Wall, Bounds } from "./geometry";
  * Directivity pattern for speakers/microphones
  */
 export type DirectivityPattern =
-  "omnidirectional" | "cardioid" | "supercardioid" | "hypercardioid" | "figure8" | "hemisphere";
+  | "omnidirectional"
+  | "cardioid"
+  | "supercardioid"
+  | "hypercardioid"
+  | "figure8"
+  | "hemisphere";
 
 /**
  * Distance attenuation model
