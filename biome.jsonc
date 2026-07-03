@@ -3,11 +3,12 @@
   "root": true,
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
-    // ts/tsx only — same scope as the old `eslint --ext .ts,.tsx` + prettier globs.
+    // ts/tsx/js (js added post-migration; covers the signaling server).
     // dist is negated explicitly because it is not in .gitignore (only in the clean script).
     "includes": [
       "**/*.ts",
       "**/*.tsx",
+      "**/*.js",
       "!**/node_modules",
       "!**/.vite",
       "!**/out",
@@ -34,11 +35,15 @@
       "bracketSpacing": true
     }
   },
-  // organizeImports would touch 85 files; enable later as its own commit if wanted
-  "assist": { "enabled": false },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": { "organizeImports": "on" }
+    }
+  },
   "linter": {
     "enabled": true,
-    "domains": { "solid": "recommended" },
+    "domains": { "solid": "all" },
     "rules": { "preset": "recommended" }
   },
   "overrides": [

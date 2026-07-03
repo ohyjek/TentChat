@@ -11,9 +11,11 @@
  *   /         -> The Tent (spatial audio demo)
  *   /settings -> Settings page
  */
+
+import { useI18n } from "@lib/i18n";
 import { A, useLocation } from "@solidjs/router";
 import { audioStore } from "@stores/audio";
-import { useI18n } from "@lib/i18n";
+import { For } from "solid-js";
 import styles from "./Sidebar.module.css";
 
 interface NavItem {
@@ -44,18 +46,20 @@ export function Sidebar() {
       </div>
 
       <nav class={styles.nav} aria-label="Main navigation">
-        {navItems.map((item) => (
-          <A
-            href={item.path}
-            class={`${styles.navItem} ${isActive(item.path) ? styles.active : ""}`}
-            aria-current={isActive(item.path) ? "page" : undefined}
-          >
-            <span class={styles.navIcon} aria-hidden="true">
-              {item.icon}
-            </span>
-            <span>{t(item.labelKey)}</span>
-          </A>
-        ))}
+        <For each={navItems}>
+          {(item) => (
+            <A
+              href={item.path}
+              class={`${styles.navItem} ${isActive(item.path) ? styles.active : ""}`}
+              aria-current={isActive(item.path) ? "page" : undefined}
+            >
+              <span class={styles.navIcon} aria-hidden="true">
+                {item.icon}
+              </span>
+              <span>{t(item.labelKey)}</span>
+            </A>
+          )}
+        </For>
       </nav>
 
       <div class={styles.footer}>
