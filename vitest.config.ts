@@ -44,8 +44,8 @@ export default defineConfig({
       "solid-js/store": resolver("node_modules/solid-js/store"),
       "solid-js": resolver("node_modules/solid-js"),
       // Resolve UI package to source for better DX
-      "@clippis/ui": resolver("packages/ui/src"),
-      "@clippis/types": resolver("packages/types/src"),
+      "@tentchat/ui": resolver("packages/ui/src"),
+      "@tentchat/types": resolver("packages/types/src"),
       // App source alias
       "@src/": resolver("src/"),
       "@src": resolver("src"),

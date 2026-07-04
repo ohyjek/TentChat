@@ -1,10 +1,10 @@
-# 🎪 Clippi's Tent - Spatial Voice Chat
+# 🎪 TentChat - Spatial Voice Chat
 
 A desktop application prototype recreating **Dolby Axon**-style spatial voice chat functionality. Built with Electron, SolidJS, and Web Audio API.
 
 ## Overview
 
-Clippi's tent demonstrates spatial audio positioning where sound sources have virtual positions in a 2D room. The listener (you) can move around, and audio volume/panning adjusts based on:
+TentChat demonstrates spatial audio positioning where sound sources have virtual positions in a 2D room. The listener (you) can move around, and audio volume/panning adjusts based on:
 
 - **Distance attenuation** — Sounds get quieter as they move further away (linear, inverse, exponential models)
 - **Stereo panning** — Sounds pan left/right based on horizontal position relative to the listener
@@ -54,8 +54,8 @@ Clippi's tent demonstrates spatial audio positioning where sound sources have vi
 
 ```bash
 # Clone the repository
-git clone https://github.com/Omi/clippis_tent.git
-cd clippis_tent
+git clone https://github.com/ohyjek/TentChat.git
+cd TentChat
 
 # Install dependencies
 pnpm install
@@ -106,9 +106,9 @@ pnpm e2e
 This is a **pnpm workspace monorepo** with UI components and types extracted into reusable packages.
 
 ```
-clippis_tent/
+TentChat/
 ├── packages/
-│   ├── ui/                           # @clippis/ui - Reusable UI component library
+│   ├── ui/                           # @tentchat/ui - Reusable UI component library
 │   │   └── src/components/
 │   │       ├── Button/               # Button with variants
 │   │       ├── ColorSwatches/        # Color picker grid
@@ -123,7 +123,7 @@ clippis_tent/
 │   │       ├── Toast/                # Notifications
 │   │       ├── Toggle/               # Checkbox with description
 │   │       └── ErrorBoundary/        # Error boundary
-│   └── types/                        # @clippis/types - Shared TypeScript types
+│   └── types/                        # @tentchat/types - Shared TypeScript types
 ├── src/
 │   ├── main.ts                       # Electron main process
 │   ├── preload.ts                    # Preload script for IPC
@@ -187,7 +187,7 @@ See [docs/TECHNICAL_ROADMAP.md](./docs/TECHNICAL_ROADMAP.md) for the detailed te
 ### ✅ Phase 1: Foundation (Complete)
 
 - [x] Electron + SolidJS + Vite setup
-- [x] UI library extraction to `@clippis/ui` package
+- [x] UI library extraction to `@tentchat/ui` package
 - [x] Spatial audio engine with distance models and directivity patterns
 - [x] Interactive room drawing with wall occlusion
 - [x] Multiple speakers with configurable properties

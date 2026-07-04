@@ -11,7 +11,7 @@
  * Used in FullDemo for both speakers and the listener.
  */
 
-import type { Position } from "@clippis/types";
+import type { Position } from "@tentchat/types";
 import type { JSX } from "solid-js";
 import styles from "./Speaker.module.css";
 

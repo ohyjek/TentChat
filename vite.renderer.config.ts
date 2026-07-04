@@ -47,8 +47,8 @@ export default defineConfig(({ mode }) => ({
       "@styles": resolver("./src/styles"),
 
       // Workspace packages (resolve to source for HMR)
-      "@clippis/ui": resolver("./packages/ui/src"),
-      "@clippis/types": resolver("./packages/types/src"),
+      "@tentchat/ui": resolver("./packages/ui/src"),
+      "@tentchat/types": resolver("./packages/types/src"),
     },
   },
   build: {
@@ -63,7 +63,7 @@ export default defineConfig(({ mode }) => ({
           // Vendor chunk for framework code
           "solid-vendor": ["solid-js", "solid-js/web", "@solidjs/router"],
           // Workspace chunks for shared dependencies
-          workspace: ["@clippis/ui", "@clippis/types"],
+          workspace: ["@tentchat/ui", "@tentchat/types"],
         },
       },
     },

@@ -4,8 +4,8 @@
  * Manages audio nodes for multiple speakers with real-time parameter updates.
  */
 
-import type { AudioNodes, AudioSourceType } from "@clippis/types";
 import { audioStore } from "@stores/audio";
+import type { AudioNodes, AudioSourceType } from "@tentchat/types";
 import { type Accessor, createSignal, onCleanup } from "solid-js";
 
 export type { AudioNodes };

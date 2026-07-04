@@ -13,7 +13,7 @@
  *   showToast({ type: "error", message: "Failed", duration: 5000 });
  */
 
-import type { Toast, ToastOptions, ToastType } from "@clippis/types";
+import type { Toast, ToastOptions, ToastType } from "@tentchat/types";
 import { createRoot, createSignal } from "solid-js";
 
 export type { Toast, ToastOptions, ToastType };

@@ -4,7 +4,6 @@
  * Allows changing source type (oscillator/microphone), directivity pattern, frequency, and color.
  */
 
-import type { AudioSourceType, DirectivityPattern } from "@clippis/types";
 import { DIRECTIVITY_OPTIONS, SOURCE_TYPE_OPTIONS } from "@components/audio/FullDemo/constants";
 import { useDemoContext } from "@components/audio/FullDemo/context";
 import { getNoteName } from "@components/audio/FullDemo/utils";
@@ -18,6 +17,7 @@ import {
   SliderField,
 } from "@components/ui";
 import { SPEAKER_COLORS } from "@lib/spatial-audio";
+import type { AudioSourceType, DirectivityPattern } from "@tentchat/types";
 import { For, Show } from "solid-js";
 
 export function SpeakerPropertiesPanel() {

@@ -1,12 +1,13 @@
 /**
  * types.ts - Type re-exports for the spatial audio demo
  *
- * Re-exports commonly used types from @clippis/types for convenience.
- * All types are defined in the shared @clippis/types package.
+ * Re-exports commonly used types from @tentchat/types for convenience.
+ * All types are defined in the shared @tentchat/types package.
  *
- * We do this because if we have to change from @clippis/types to a different package, we only have to change it in one place.
+ * We do this because if we have to change from @tentchat/types to a different package, we only have to change it in one place.
  */
 
+import type { CalculateAudioParameters } from "@lib/spatial-audio-engine";
 import type {
   AudioNodes,
   AudioParameters,
@@ -21,8 +22,7 @@ import type {
   SelectOption,
   SpeakerState,
   Wall,
-} from "@clippis/types";
-import type { CalculateAudioParameters } from "@lib/spatial-audio-engine";
+} from "@tentchat/types";
 import type { Accessor, Setter } from "solid-js";
 
 /** Context value type - exposes all state and actions to components */

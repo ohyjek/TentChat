@@ -14,7 +14,7 @@
  * - Y increases downward
  */
 
-import type { Bounds, DrawnRoom, Position, SpeakerState, Wall } from "@clippis/types";
+import type { Bounds, DrawnRoom, Position, SpeakerState, Wall } from "@tentchat/types";
 import { createUniqueId } from "solid-js";
 
 // ============================================================================

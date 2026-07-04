@@ -1,14 +1,14 @@
 /**
  * ui/index.ts - UI component exports
  *
- * Re-exports UI components from @clippis/ui and app-specific wrappers.
+ * Re-exports UI components from @tentchat/ui and app-specific wrappers.
  * Most components come directly from the UI library, while ErrorBoundary
  * and ToastContainer have app-specific wrappers that add logging.
  *
  * Usage: import { Button, Slider, Tabs } from "@/components/ui"
  */
 
-// Pure UI components from @clippis/ui
+// Pure UI components from @tentchat/ui
 export {
   Button,
   ButtonRow,
@@ -34,7 +34,7 @@ export {
   type Tab,
   Tabs,
   Toggle,
-} from "@clippis/ui";
+} from "@tentchat/ui";
 
 // App-specific wrappers (with logging integration)
 export { ErrorBoundary } from "./ErrorBoundary";

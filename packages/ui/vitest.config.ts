@@ -1,5 +1,5 @@
 /**
- * vitest.config.ts - Test configuration for @clippis/ui
+ * vitest.config.ts - Test configuration for @tentchat/ui
  *
  * Configures Vitest with jsdom environment for component testing.
  * Note: Tests are typically run from the root monorepo for better deduplication.

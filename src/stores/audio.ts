@@ -12,10 +12,10 @@
  * Usage: import { audioStore } from "@/stores/audio"
  */
 
-import type { Position, SoundSource } from "@clippis/types";
 import { logger } from "@lib/logger";
 import { createSoundSource, randomPosition } from "@lib/spatial-audio";
 import { showToast } from "@stores/toast";
+import type { Position, SoundSource } from "@tentchat/types";
 import { createRoot, createSignal } from "solid-js";
 
 // Store AudioContext outside of reactive system

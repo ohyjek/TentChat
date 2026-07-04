@@ -1,5 +1,5 @@
 /**
- * test/setup.ts - Test setup for @clippis/ui
+ * test/setup.ts - Test setup for @tentchat/ui
  *
  * Configures testing environment with jest-dom matchers and
  * provides mock CSS variables for component styling.

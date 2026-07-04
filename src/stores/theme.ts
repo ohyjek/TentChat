@@ -11,7 +11,7 @@
  * "computations created outside createRoot" warnings.
  */
 
-import type { ResolvedTheme, ThemeMode } from "@clippis/types";
+import type { ResolvedTheme, ThemeMode } from "@tentchat/types";
 import { createSignal } from "solid-js";
 
 export type { ResolvedTheme, ThemeMode };
