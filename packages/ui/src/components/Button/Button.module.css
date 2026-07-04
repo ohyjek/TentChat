@@ -9,7 +9,9 @@
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
   white-space: nowrap;
 }
 

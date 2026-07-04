@@ -15,7 +15,9 @@
   cursor: pointer;
   border: 2px solid transparent;
   padding: 0;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .swatch:hover {

@@ -57,13 +57,24 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes playPulse {
-  0% { transform: scale(0.8); opacity: 0.5; }
-  100% { transform: scale(1.5); opacity: 0; }
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 /* Sound cone - triangular shape showing direction of audio projection */
@@ -87,6 +98,7 @@
 }
 
 .soundCone:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: hover must beat the JS-set inline opacity */
   opacity: 0.8 !important;
   border-color: var(--speaker-color);
 }
@@ -104,7 +116,9 @@
   border-radius: var(--radius-full, 9999px);
   padding: 8px;
   cursor: pointer;
-  transition: transform var(--transition-fast, 0.15s ease), box-shadow var(--transition-fast, 0.15s ease);
+  transition:
+    transform var(--transition-fast, 0.15s ease),
+    box-shadow var(--transition-fast, 0.15s ease);
   user-select: none;
 }
 
