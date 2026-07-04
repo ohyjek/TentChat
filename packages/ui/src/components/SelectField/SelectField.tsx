@@ -12,7 +12,7 @@
  * />
  */
 
-import type { SelectOption } from "@clippis/types";
+import type { SelectOption } from "@tentchat/types";
 import { createUniqueId, For, type JSX, splitProps } from "solid-js";
 import styles from "./SelectField.module.css";
 

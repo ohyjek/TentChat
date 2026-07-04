@@ -15,7 +15,7 @@
  * />
  */
 
-import type { Tab } from "@clippis/types";
+import type { Tab } from "@tentchat/types";
 import { createSignal, For } from "solid-js";
 import styles from "./Tabs.module.css";
 

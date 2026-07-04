@@ -8,7 +8,7 @@
  * <ToastContainer toasts={toasts()} onDismiss={dismissToast} />
  */
 
-import type { ToastData, ToastType } from "@clippis/types";
+import type { ToastData, ToastType } from "@tentchat/types";
 import { For } from "solid-js";
 import styles from "./Toast.module.css";
 

@@ -5,7 +5,6 @@
  * Composes specialized hooks for room, speaker, audio, and interaction management.
  */
 
-import type { DistanceModel } from "@clippis/types";
 import {
   useAudioPlayback,
   useCanvasDrawing,
@@ -20,6 +19,7 @@ import { isSpeakerInsideRoom } from "@lib/spatial-utils";
 import { audioStore } from "@stores/audio";
 import { showToast } from "@stores/toast";
 import { webRTCStore } from "@stores/webRTC";
+import type { DistanceModel } from "@tentchat/types";
 import {
   createContext,
   createEffect,

@@ -1,7 +1,7 @@
-import type { DataChannelMessage, Position, RemotePeerState } from "@clippis/types";
 import { logger } from "@lib/logger";
 import { audioStore } from "@stores/audio";
 import { showToast } from "@stores/toast";
+import type { DataChannelMessage, Position, RemotePeerState } from "@tentchat/types";
 import { createRoot, createSignal, onCleanup } from "solid-js";
 
 const DEFAULT_ICE_SERVERS = [

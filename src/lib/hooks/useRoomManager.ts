@@ -4,13 +4,13 @@
  * Provides room CRUD operations and selection state.
  */
 
-import type { DrawnRoom, Position, Wall } from "@clippis/types";
 import {
   createRoomFromCorners,
   DEFAULT_ATTENUATION,
   isValidRoomSize,
   updateItemById,
 } from "@lib/spatial-utils";
+import type { DrawnRoom, Position, Wall } from "@tentchat/types";
 import { type Accessor, createSignal, type Setter } from "solid-js";
 
 /** Room creation configuration */

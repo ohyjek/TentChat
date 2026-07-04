@@ -10,7 +10,6 @@
  * Device enumeration requires microphone permission on first load.
  */
 
-import type { AudioDevice } from "@clippis/types";
 import { Section, SelectField, Slider, Toggle } from "@components/ui";
 import useHardwareAcceleration from "@lib/hooks/useHardwareAcceleration";
 import { type Locale, locales, useI18n } from "@lib/i18n";
@@ -18,6 +17,7 @@ import { logger } from "@lib/logger";
 import { audioStore } from "@stores/audio";
 import { type ThemeMode, themeStore } from "@stores/theme";
 import { showToast } from "@stores/toast";
+import type { AudioDevice } from "@tentchat/types";
 import { createSignal, onMount } from "solid-js";
 import styles from "./Settings.module.css";
 

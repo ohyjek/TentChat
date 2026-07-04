@@ -2,7 +2,6 @@
  * spatial-utils.test.ts - Unit tests for spatial utility functions
  */
 
-import type { DrawnRoom, SpeakerState } from "@clippis/types";
 import {
   angleBetween,
   createRoomFromCorners,
@@ -17,6 +16,7 @@ import {
   toPercent,
   updateItemById,
 } from "@lib/spatial-utils";
+import type { DrawnRoom, SpeakerState } from "@tentchat/types";
 import { describe, expect, it } from "vitest";
 
 describe("Coordinate Conversion", () => {

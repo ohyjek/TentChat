@@ -12,11 +12,11 @@
  * />
  */
 
-import type { ListItem } from "@clippis/types";
+import type { ListItem } from "@tentchat/types";
 import { For, type JSX, Show } from "solid-js";
 import styles from "./ItemList.module.css";
 
-/** @deprecated Use ListItem from @clippis/types instead */
+/** @deprecated Use ListItem from @tentchat/types instead */
 export type ItemListItem = ListItem;
 
 export interface ItemListProps {

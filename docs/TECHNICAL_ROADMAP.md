@@ -1,6 +1,6 @@
 # Technical Roadmap
 
-This document outlines the technical implementation plan for Clippi's Tent, focusing on completing all audio and voice features before engaging with multiplayer.
+This document outlines the technical implementation plan for TentChat, focusing on completing all audio and voice features before engaging with multiplayer.
 
 ## Current State (Phase 1 Complete)
 

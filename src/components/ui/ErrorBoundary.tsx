@@ -1,11 +1,11 @@
 /**
  * ErrorBoundary.tsx - App-level ErrorBoundary wrapper
  *
- * Wraps the @clippis/ui ErrorBoundary with app-specific error logging.
+ * Wraps the @tentchat/ui ErrorBoundary with app-specific error logging.
  */
 
-import { ErrorBoundary as UIErrorBoundary } from "@clippis/ui";
 import { logger } from "@lib/logger";
+import { ErrorBoundary as UIErrorBoundary } from "@tentchat/ui";
 import type { JSX } from "solid-js";
 
 interface ErrorBoundaryProps {

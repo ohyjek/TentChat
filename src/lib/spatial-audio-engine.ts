@@ -12,6 +12,13 @@
  * Uses Web Audio API for actual sound generation.
  */
 
+import {
+  calculateAngleToPoint,
+  calculateDistance,
+  calculateWallAttenuation,
+  countWallsBetween,
+  normalizeAngle,
+} from "@lib/spatial-audio";
 import type {
   AudioParameterOptions,
   AudioParameters,
@@ -21,15 +28,7 @@ import type {
   Position,
   SourceConfig,
   Wall,
-} from "@clippis/types";
-
-import {
-  calculateAngleToPoint,
-  calculateDistance,
-  calculateWallAttenuation,
-  countWallsBetween,
-  normalizeAngle,
-} from "@lib/spatial-audio";
+} from "@tentchat/types";
 
 // ============================================================================
 // RETURN TYPE EXPORTS

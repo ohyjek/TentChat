@@ -6,16 +6,16 @@
  * remote position, the listener, walls, or audio settings change.
  */
 
+import { logger } from "@lib/logger";
+import { calculateAudioParameters } from "@lib/spatial-audio-engine";
+import { audioStore } from "@stores/audio";
 import type {
   AudioParameterOptions,
   AudioParameters,
   Listener,
   Position,
   Wall,
-} from "@clippis/types";
-import { logger } from "@lib/logger";
-import { calculateAudioParameters } from "@lib/spatial-audio-engine";
-import { audioStore } from "@stores/audio";
+} from "@tentchat/types";
 import { type Accessor, createEffect, createMemo, createSignal, onCleanup } from "solid-js";
 
 export interface RemoteSpeakerOptions {

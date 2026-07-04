@@ -14,18 +14,18 @@ importers:
 
   .:
     dependencies:
-      '@clippis/types':
-        specifier: workspace:*
-        version: link:packages/types
-      '@clippis/ui':
-        specifier: workspace:*
-        version: link:packages/ui
       '@solid-primitives/i18n':
         specifier: ^2.2.1
         version: 2.2.1(solid-js@1.9.14)
       '@solidjs/router':
         specifier: ^0.16.1
         version: 0.16.1(solid-js@1.9.14)
+      '@tentchat/types':
+        specifier: workspace:*
+        version: link:packages/types
+      '@tentchat/ui':
+        specifier: workspace:*
+        version: link:packages/ui
       electron-log:
         specifier: ^5.4.4
         version: 5.4.4
@@ -126,7 +126,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@clippis/types':
+      '@tentchat/types':
         specifier: workspace:*
         version: link:../types
       solid-js:

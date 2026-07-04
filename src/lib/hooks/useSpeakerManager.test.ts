@@ -2,8 +2,8 @@
  * useSpeakerManager.test.ts - Unit tests for speaker management hook
  */
 
-import type { SpeakerState } from "@clippis/types";
 import { type SpeakerManagerState, useSpeakerManager } from "@lib/hooks/useSpeakerManager";
+import type { SpeakerState } from "@tentchat/types";
 import { createRoot } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 

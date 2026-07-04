@@ -11,7 +11,7 @@
  * <Button icon="✕" aria-label="Close" onClick={close} />
  */
 
-import type { ButtonVariant } from "@clippis/types";
+import type { ButtonVariant } from "@tentchat/types";
 import { type JSX, splitProps } from "solid-js";
 import styles from "./Button.module.css";
 
