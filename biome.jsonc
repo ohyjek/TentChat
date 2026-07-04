@@ -3,12 +3,14 @@
   "root": true,
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
-    // ts/tsx/js (js added post-migration; covers the signaling server).
     // dist is negated explicitly because it is not in .gitignore (only in the clean script).
     "includes": [
       "**/*.ts",
       "**/*.tsx",
       "**/*.js",
+      "**/*.json",
+      "**/*.jsonc",
+      "**/*.css",
       "!**/node_modules",
       "!**/.vite",
       "!**/out",

@@ -145,8 +145,10 @@
 /* Allow pointer events on children (the Speaker component) */
 .entityWrapper > * {
   pointer-events: auto;
+  /* biome-ignore-start lint/complexity/noImportantStyles: must override the child Speaker's own positioning inside the canvas wrapper */
   position: relative !important;
   transform: none !important;
+  /* biome-ignore-end lint/complexity/noImportantStyles: see above */
 }
 
 .entityWrapper.currentPerspective {

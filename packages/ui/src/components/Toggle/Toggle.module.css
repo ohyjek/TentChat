@@ -6,6 +6,13 @@
   padding: var(--spacing-sm) 0;
 }
 
+.label {
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
 .toggle:hover .label {
   color: var(--color-text-primary);
 }
@@ -28,13 +35,6 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-
-.label {
-  color: var(--color-text-primary);
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: color var(--transition-fast);
 }
 
 .description {
